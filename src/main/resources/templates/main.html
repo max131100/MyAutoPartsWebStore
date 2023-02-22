@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<head>
+  <title>MyWebAutoPartsStore</title>
+  <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="${some}"/>
+<div sec:authorize="hasAuthority('ADMIN')">
+  <form method="post">
+    <input type="text" name="manufacturer" placeholder="Input part's manufacturer"/>
+    <input type="text" name="article" placeholder="Input part's article"/>
+    <input type="text" name="description" placeholder="Input part's description"/>
+    <input type="number" name="price" placeholder="Input part's price"/>
+    <input type="number" name="qtyOnHand" placeholder="Input part's quantity"/>
+    <button type="submit">Add</button>
+  </form>
+</div>
+<p>Find by description</p>
+<form method="post" action="filter">
+  <input type="text" name="descriptionFilter"/>
+  <button type="submit">Find</button>
+</form>
+<div>Parts list:</div><br/>
+<div th:if="${parts.empty}">Запчасти отсутствуют</div>
+<div th:each="part : ${parts}">
+  <b th:text="${part.manufacturer} ">Manufacturer</b>
+  <b th:text="${part.article} ">Article</b>
+  <span th:text="${part.description} ">Description</span>
+  <i th:text="${part.price} ">Price</i>
+  <i th:text="${part.qtyOnHand}">QtyOnHand</i>
+</div>
+<br/>
+<p sec:authorize="!isAuthenticated()">Click <a th:href="@{/login}">here</a>to login</p>
+<p sec:authorize="!isAuthenticated()">Click <a th:href="@{/registration}">here</a> to register</p>
+<p sec:authorize="isAuthenticated()">Click <a th:href="@{/logout}">here</a> to logout</p>
+<b></b>
+</body>
+</html>
